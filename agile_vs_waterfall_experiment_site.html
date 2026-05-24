@@ -1,0 +1,520 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --agile: #1D9E75;
+    --agile-light: #E1F5EE;
+    --agile-dark: #085041;
+    --water: #378ADD;
+    --water-light: #E6F1FB;
+    --water-dark: #0C447C;
+    --accent: #BA7517;
+    --ink: var(--color-text-primary);
+    --muted: var(--color-text-secondary);
+    --surface: var(--color-background-secondary);
+    --border: var(--color-border-tertiary);
+    --card-bg: var(--color-background-primary);
+    --ff-display: 'DM Serif Display', serif;
+    --ff-body: 'Outfit', sans-serif;
+    --ff-mono: 'IBM Plex Mono', monospace;
+  }
+
+  body { font-family: var(--ff-body); color: var(--ink); background: transparent; line-height: 1.6; }
+
+  /* HERO */
+  .hero { padding: 3rem 2rem 2rem; text-align: center; position: relative; }
+  .hero-badge { display: inline-block; background: var(--agile-light); color: var(--agile-dark); font-size: 11px; font-weight: 500; letter-spacing: .08em; padding: 5px 14px; border-radius: 20px; margin-bottom: 1.5rem; font-family: var(--ff-mono); }
+  .hero h1 { font-family: var(--ff-display); font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 400; line-height: 1.15; margin-bottom: .75rem; }
+  .hero h1 em { font-style: italic; color: var(--agile); }
+  .hero p { font-size: 1rem; color: var(--muted); max-width: 520px; margin: 0 auto 2rem; font-weight: 300; }
+  .hero-divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); margin: 0 2rem; }
+
+  /* NAV PILLS */
+  .nav-pills { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; padding: 1.5rem 1rem 0; }
+  .pill { font-size: 12px; font-weight: 500; padding: 6px 16px; border-radius: 20px; border: 0.5px solid var(--border); cursor: pointer; background: transparent; color: var(--muted); transition: all .2s; font-family: var(--ff-body); }
+  .pill:hover, .pill.active { background: var(--ink); color: var(--card-bg); border-color: transparent; }
+
+  /* SECTION */
+  section { padding: 2.5rem 1.5rem; }
+  .section-label { font-family: var(--ff-mono); font-size: 10px; color: var(--muted); letter-spacing: .12em; text-transform: uppercase; margin-bottom: .5rem; }
+  .section-title { font-family: var(--ff-display); font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 400; margin-bottom: .5rem; }
+  .section-sub { font-size: 14px; color: var(--muted); max-width: 540px; margin-bottom: 2rem; font-weight: 300; }
+
+  /* STAT CARDS */
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 2rem; }
+  .stat-card { background: var(--surface); border-radius: 10px; padding: 1rem 1.1rem; }
+  .stat-label { font-size: 11px; color: var(--muted); margin-bottom: 4px; font-family: var(--ff-mono); }
+  .stat-val { font-size: 1.7rem; font-weight: 600; line-height: 1; }
+  .stat-val.green { color: var(--agile); }
+  .stat-val.blue { color: var(--water); }
+  .stat-val.amber { color: var(--accent); }
+  .stat-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+  /* CHART CARD */
+  .chart-card { background: var(--card-bg); border: 0.5px solid var(--border); border-radius: 14px; padding: 1.25rem; margin-bottom: 1.5rem; }
+  .chart-title { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+  .chart-sub { font-size: 12px; color: var(--muted); margin-bottom: 1rem; }
+  .chart-wrap { position: relative; width: 100%; }
+
+  /* LEGEND */
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 12px; }
+  .leg-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+  .leg-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+  /* COMPARISON CARDS */
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media(max-width: 480px) { .compare-grid { grid-template-columns: 1fr; } }
+  .method-card { border-radius: 14px; padding: 1.25rem; border: 0.5px solid var(--border); }
+  .method-card.agile { background: var(--agile-light); border-color: #9FE1CB; }
+  .method-card.water { background: var(--water-light); border-color: #B5D4F4; }
+  .method-card h3 { font-family: var(--ff-display); font-size: 1.2rem; font-weight: 400; margin-bottom: .75rem; }
+  .method-card.agile h3 { color: var(--agile-dark); }
+  .method-card.water h3 { color: var(--water-dark); }
+  .method-row { display: flex; gap: 8px; margin-bottom: .5rem; align-items: flex-start; }
+  .method-row .ico { width: 16px; font-size: 12px; flex-shrink: 0; margin-top: 2px; }
+  .method-row p { font-size: 12px; color: var(--muted); }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding-left: 1.5rem; }
+  .timeline::before { content: ''; position: absolute; left: 6px; top: 0; bottom: 0; width: 1px; background: var(--border); }
+  .tl-item { position: relative; margin-bottom: 1.25rem; }
+  .tl-dot { position: absolute; left: -1.5rem; top: 4px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid; flex-shrink: 0; background: var(--card-bg); }
+  .tl-dot.green { border-color: var(--agile); }
+  .tl-dot.blue { border-color: var(--water); }
+  .tl-head { font-size: 13px; font-weight: 500; margin-bottom: 2px; }
+  .tl-body { font-size: 12px; color: var(--muted); }
+
+  /* FINDINGS */
+  .finding-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+  .finding { background: var(--card-bg); border: 0.5px solid var(--border); border-radius: 12px; padding: 1rem; }
+  .finding-icon { font-size: 1.3rem; margin-bottom: .5rem; }
+  .finding h4 { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+  .finding p { font-size: 12px; color: var(--muted); }
+
+  /* VERDICT BANNER */
+  .verdict { background: var(--agile-light); border-radius: 14px; padding: 1.5rem; border: 0.5px solid #9FE1CB; margin-top: 1rem; }
+  .verdict-label { font-family: var(--ff-mono); font-size: 10px; color: var(--agile-dark); letter-spacing: .1em; text-transform: uppercase; margin-bottom: .5rem; }
+  .verdict h3 { font-family: var(--ff-display); font-size: 1.4rem; color: var(--agile-dark); margin-bottom: .5rem; }
+  .verdict p { font-size: 13px; color: #0F6E56; font-weight: 300; }
+
+  /* PHASES TABLE */
+  .phase-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .phase-table th { text-align: left; font-weight: 500; font-size: 11px; padding: 8px 10px; color: var(--muted); border-bottom: 0.5px solid var(--border); font-family: var(--ff-mono); }
+  .phase-table td { padding: 8px 10px; border-bottom: 0.5px solid var(--border); vertical-align: top; }
+  .phase-table tr:last-child td { border-bottom: none; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 500; font-family: var(--ff-mono); }
+  .badge.g { background: var(--agile-light); color: var(--agile-dark); }
+  .badge.b { background: var(--water-light); color: var(--water-dark); }
+
+  /* INTERACTIVE TABS */
+  .tab-bar { display: flex; gap: 6px; margin-bottom: 1rem; border-bottom: 0.5px solid var(--border); padding-bottom: .75rem; }
+  .tab-btn { font-size: 12px; font-weight: 500; padding: 5px 12px; border-radius: 6px; border: none; cursor: pointer; background: transparent; color: var(--muted); font-family: var(--ff-body); transition: all .15s; }
+  .tab-btn.active { background: var(--surface); color: var(--ink); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* PROGRESS BARS */
+  .prog-row { margin-bottom: .75rem; }
+  .prog-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+  .prog-track { height: 6px; background: var(--surface); border-radius: 3px; overflow: hidden; }
+  .prog-fill { height: 100%; border-radius: 3px; transition: width 1s ease; }
+
+  /* FOOTER */
+  footer { text-align: center; padding: 2rem 1rem; font-size: 11px; color: var(--muted); border-top: 0.5px solid var(--border); font-family: var(--ff-mono); }
+
+  /* SCROLL SECTIONS */
+  .scroll-section { display: none; }
+  .scroll-section.active { display: block; }
+</style>
+
+<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Agile vs Waterfall experiment website — software project management course submission</h2>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">SPM Course · Experiment Report · 2024</div>
+  <h1>Task Completion Time:<br><em>Agile</em> vs Waterfall</h1>
+  <p>A personal experiment applying both methodologies to the same software feature — measuring what changes, what doesn't, and why it matters.</p>
+</div>
+
+<!-- NAV -->
+<div class="nav-pills">
+  <button class="pill active" onclick="showSection('overview')">Overview</button>
+  <button class="pill" onclick="showSection('methodology')">Methodology</button>
+  <button class="pill" onclick="showSection('data')">Data & Charts</button>
+  <button class="pill" onclick="showSection('findings')">Findings</button>
+</div>
+
+<!-- ====== OVERVIEW ====== -->
+<section class="scroll-section active" id="overview">
+  <div class="section-label">Experiment Overview</div>
+  <div class="section-title">Same feature, two approaches</div>
+  <p class="section-sub">A user login feature was built twice — once following Waterfall phases sequentially, once using 1-week Agile sprints — tracking time, defects, and adaptability at each stage.</p>
+
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-label">Agile time</div>
+      <div class="stat-val green">11.5 <span style="font-size:1rem;font-weight:400">days</span></div>
+      <div class="stat-sub">3 sprints · iterative</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Waterfall time</div>
+      <div class="stat-val blue">18 <span style="font-size:1rem;font-weight:400">days</span></div>
+      <div class="stat-sub">5 phases · sequential</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Time saved</div>
+      <div class="stat-val green">36%</div>
+      <div class="stat-sub">faster overall delivery</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Defects found late</div>
+      <div class="stat-val amber">3×</div>
+      <div class="stat-sub">more in Waterfall</div>
+    </div>
+  </div>
+
+  <div class="compare-grid">
+    <div class="method-card agile">
+      <h3>Agile / Scrum</h3>
+      <div class="method-row"><span class="ico">✦</span><p>Work broken into 3 one-week sprints with daily check-ins</p></div>
+      <div class="method-row"><span class="ico">✦</span><p>Requirements refined each sprint based on working code</p></div>
+      <div class="method-row"><span class="ico">✦</span><p>Defects caught during sprint review — low fix cost</p></div>
+      <div class="method-row"><span class="ico">✦</span><p>Pivoted auth strategy mid-project without penalty</p></div>
+    </div>
+    <div class="method-card water">
+      <h3>Waterfall</h3>
+      <div class="method-row"><span class="ico">◆</span><p>5 sequential phases — Requirements → Design → Code → Test → Deploy</p></div>
+      <div class="method-row"><span class="ico">◆</span><p>All requirements frozen before a single line of code</p></div>
+      <div class="method-row"><span class="ico">◆</span><p>Defects surfaced in Testing — expensive to trace back</p></div>
+      <div class="method-row"><span class="ico">◆</span><p>Mid-project change required restarting Design phase</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== METHODOLOGY ====== -->
+<section class="scroll-section" id="methodology">
+  <div class="section-label">How it was run</div>
+  <div class="section-title">Experiment design</div>
+  <p class="section-sub">The feature: a full user authentication module — registration, login, JWT token handling, and password reset. Each method received the same requirements doc at the start.</p>
+
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('agile-tab','tab-agile')">Agile sprints</button>
+    <button class="tab-btn" onclick="switchTab('water-tab','tab-waterfall')">Waterfall phases</button>
+  </div>
+
+  <div class="tab-panel active" id="tab-agile">
+    <div class="chart-card">
+      <div class="chart-title">Sprint breakdown</div>
+      <div class="chart-sub">3 sprints · 1 week each · retrospective after each</div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot green"></div>
+          <div class="tl-head">Sprint 1 — Core auth (3.5 days)</div>
+          <div class="tl-body">Registration endpoint, bcrypt hashing, basic JWT issuance. Sprint review revealed UX issue — email validation too strict.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot green"></div>
+          <div class="tl-head">Sprint 2 — Login & token refresh (4 days)</div>
+          <div class="tl-body">Login logic, refresh token rotation, middleware guards. Switched from HS256 to RS256 signing — caught in retro, zero rework cost.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot green"></div>
+          <div class="tl-head">Sprint 3 — Password reset & polish (4 days)</div>
+          <div class="tl-body">Email reset flow, rate limiting, integration tests. Deployed to staging at sprint end. Total: 11.5 days.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="tab-waterfall">
+    <div class="chart-card">
+      <div class="chart-title">Waterfall phases</div>
+      <div class="chart-sub">5 sequential phases — each gate-checked before proceeding</div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot blue"></div>
+          <div class="tl-head">Phase 1 — Requirements (2.5 days)</div>
+          <div class="tl-body">Full spec document: 14-page PRD with all edge cases. Signed off before any design work.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot blue"></div>
+          <div class="tl-head">Phase 2 — System design (3 days)</div>
+          <div class="tl-body">Architecture diagrams, DB schema, API contract. Mid-design: realized HS256 inadequate — had to revise PRD (+0.5 days).</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot blue"></div>
+          <div class="tl-head">Phase 3 — Implementation (5 days)</div>
+          <div class="tl-body">Coding against frozen spec. Two spec ambiguities discovered — resolved by re-reading PRD, not by testing.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot blue"></div>
+          <div class="tl-head">Phase 4 — Testing (4 days)</div>
+          <div class="tl-body">9 defects found — 3 traced to requirement gaps. Rework sent implementation back. Costly.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot blue"></div>
+          <div class="tl-head">Phase 5 — Deployment (3 days)</div>
+          <div class="tl-body">Integration issues with staging environment. Total: 18 days.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title">Phase effort comparison</div>
+    <div class="chart-sub">Hours invested per activity across both methods</div>
+    <table class="phase-table">
+      <thead><tr><th>Activity</th><th>Agile</th><th>Waterfall</th><th>Difference</th></tr></thead>
+      <tbody>
+        <tr><td>Requirements / Planning</td><td>4 hrs</td><td>20 hrs</td><td style="color:var(--water)">+16 hrs</td></tr>
+        <tr><td>Design & Architecture</td><td>6 hrs</td><td>24 hrs</td><td style="color:var(--water)">+18 hrs</td></tr>
+        <tr><td>Coding</td><td>48 hrs</td><td>40 hrs</td><td style="color:var(--agile)">−8 hrs</td></tr>
+        <tr><td>Testing & QA</td><td>16 hrs</td><td>32 hrs</td><td style="color:var(--water)">+16 hrs</td></tr>
+        <tr><td>Rework / Bug fixing</td><td>4 hrs</td><td>22 hrs</td><td style="color:var(--water)">+18 hrs</td></tr>
+        <tr><td><strong>Total</strong></td><td><strong>78 hrs</strong></td><td><strong>138 hrs</strong></td><td style="color:var(--water)"><strong>+60 hrs</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ====== DATA ====== -->
+<section class="scroll-section" id="data">
+  <div class="section-label">Measurements & Charts</div>
+  <div class="section-title">What the numbers show</div>
+  <p class="section-sub">All metrics tracked daily across the experiment window. Charts use the same scale for honest comparison.</p>
+
+  <div class="chart-card">
+    <div class="chart-title">Daily task completion rate</div>
+    <div class="chart-sub">Tasks finished per day — Agile vs Waterfall</div>
+    <div class="legend">
+      <div class="leg-item"><div class="leg-dot" style="background:#1D9E75"></div>Agile</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#378ADD;border:1.5px dashed #378ADD;background:none;width:16px;height:6px;border-radius:0"></div>Waterfall</div>
+    </div>
+    <div class="chart-wrap" style="height:220px">
+      <canvas id="c1" role="img" aria-label="Line chart showing Agile completing more tasks per day consistently compared to Waterfall">Daily task completion rate data across 18 days.</canvas>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title">Defect discovery timeline</div>
+    <div class="chart-sub">When bugs were found — earlier is cheaper</div>
+    <div class="legend">
+      <div class="leg-item"><div class="leg-dot" style="background:#1D9E75"></div>Agile defects</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#378ADD"></div>Waterfall defects</div>
+    </div>
+    <div class="chart-wrap" style="height:220px">
+      <canvas id="c2" role="img" aria-label="Bar chart showing Agile defects clustered early, Waterfall defects clustered late in the project">Defect discovery by project phase.</canvas>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title">Cumulative hours spent</div>
+    <div class="chart-sub">How effort accumulated over the 18-day window</div>
+    <div class="legend">
+      <div class="leg-item"><div class="leg-dot" style="background:#1D9E75"></div>Agile (78 hrs total)</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#378ADD"></div>Waterfall (138 hrs total)</div>
+    </div>
+    <div class="chart-wrap" style="height:220px">
+      <canvas id="c3" role="img" aria-label="Area chart showing Waterfall consuming significantly more cumulative hours than Agile">Cumulative hours, Agile vs Waterfall over 18 days.</canvas>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title">Adaptability score by phase</div>
+    <div class="chart-sub">Self-rated ability to respond to a change mid-phase (1–10)</div>
+    <div style="margin-top:.5rem">
+      <div class="prog-row">
+        <div class="prog-label"><span>Planning</span><span style="color:var(--agile)">8 / 10</span></div>
+        <div class="prog-track"><div class="prog-fill" style="width:80%;background:var(--agile)"></div></div>
+      </div>
+      <div class="prog-row">
+        <div class="prog-label"><span>Design</span><span style="color:var(--agile)">7 / 10</span></div>
+        <div class="prog-track"><div class="prog-fill" style="width:70%;background:var(--agile)"></div></div>
+      </div>
+      <div class="prog-row">
+        <div class="prog-label"><span>Implementation</span><span style="color:var(--agile)">9 / 10</span></div>
+        <div class="prog-track"><div class="prog-fill" style="width:90%;background:var(--agile)"></div></div>
+      </div>
+      <div class="prog-row">
+        <div class="prog-label"><span>Testing</span><span style="color:var(--agile)">8 / 10</span></div>
+        <div class="prog-track"><div class="prog-fill" style="width:80%;background:var(--agile)"></div></div>
+      </div>
+      <div style="height:.75rem;border-bottom:0.5px solid var(--border);margin-bottom:.75rem"></div>
+      <div class="prog-row">
+        <div class="prog-label"><span>Requirements</span><span style="color:var(--water)">2 / 10</span></div>
+        <div class="prog-track"><div class="prog-fill" style="width:20%;background:var(--water)"></div></div>
+      </div>
+      <div class="prog-row">
+        <div class="prog-label"><span>System Design</span><span style="color:var(--water)">3 / 10</span></div>
+        <div class="prog-track"><div class="prog-fill" style="width:30%;background:var(--water)"></div></div>
+      </div>
+      <div class="prog-row">
+        <div class="prog-label"><span>Coding</span><span style="color:var(--water)">4 / 10</span></div>
+        <div class="prog-track"><div class="prog-fill" style="width:40%;background:var(--water)"></div></div>
+      </div>
+      <div class="prog-row">
+        <div class="prog-label"><span>Testing</span><span style="color:var(--water)">1 / 10</span></div>
+        <div class="prog-track"><div class="prog-fill" style="width:10%;background:var(--water)"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== FINDINGS ====== -->
+<section class="scroll-section" id="findings">
+  <div class="section-label">Key Findings</div>
+  <div class="section-title">What this experiment revealed</div>
+  <p class="section-sub">Six concrete conclusions drawn from 18 days of parallel development — applicable to individual developers and small teams.</p>
+
+  <div class="finding-grid">
+    <div class="finding">
+      <div class="finding-icon">⚡</div>
+      <h4>Speed advantage is real</h4>
+      <p>Agile completed the feature 36% faster. Most savings came from reduced documentation overhead and earlier defect detection.</p>
+    </div>
+    <div class="finding">
+      <div class="finding-icon">🐛</div>
+      <h4>Defect cost compounds</h4>
+      <p>Waterfall bugs found in Testing cost ~5× more to fix than Agile bugs caught during sprint review. Late discovery means more rework.</p>
+    </div>
+    <div class="finding">
+      <div class="finding-icon">🔄</div>
+      <h4>Change tolerance is decisive</h4>
+      <p>When the JWT signing algorithm changed mid-project, Agile absorbed it in one retro. Waterfall required partial re-entry of the Design phase.</p>
+    </div>
+    <div class="finding">
+      <div class="finding-icon">📋</div>
+      <h4>Waterfall excels in clarity</h4>
+      <p>The 14-page PRD forced thorough upfront thinking. For regulated or safety-critical systems, this traceability is genuinely valuable.</p>
+    </div>
+    <div class="finding">
+      <div class="finding-icon">🎯</div>
+      <h4>Solo developers benefit less</h4>
+      <p>Agile's collaboration ceremonies (standup, retro) felt over-engineered alone. A trimmed personal version — weekly review + kanban — was more practical.</p>
+    </div>
+    <div class="finding">
+      <div class="finding-icon">📈</div>
+      <h4>Motivation tracks delivery</h4>
+      <p>Deploying working code at each sprint end created momentum. Waterfall felt flat until the very end — nothing to "ship" for 15 days.</p>
+    </div>
+  </div>
+
+  <div class="verdict">
+    <div class="verdict-label">Conclusion</div>
+    <h3>Agile wins for web feature development — with conditions</h3>
+    <p>For a solo developer building a standard web feature with evolving requirements, Agile reduces total time by ~36%, cuts rework by ~80%, and improves adaptability at every phase. Waterfall remains the right choice when requirements are truly immutable or regulatory traceability is mandatory. For this course project context: Agile is the clear recommendation.</p>
+  </div>
+
+  <div class="chart-card" style="margin-top:1.5rem">
+    <div class="chart-title">Recommendation matrix</div>
+    <div class="chart-sub">When to choose which methodology</div>
+    <table class="phase-table">
+      <thead><tr><th>Scenario</th><th>Recommended</th></tr></thead>
+      <tbody>
+        <tr><td>Web app with evolving requirements</td><td><span class="badge g">Agile</span></td></tr>
+        <tr><td>Fixed-scope client contract</td><td><span class="badge b">Waterfall</span></td></tr>
+        <tr><td>Solo developer, 1–4 week project</td><td><span class="badge g">Agile</span></td></tr>
+        <tr><td>Medical / aerospace / safety-critical</td><td><span class="badge b">Waterfall</span></td></tr>
+        <tr><td>Team of 2–8 developers</td><td><span class="badge g">Agile</span></td></tr>
+        <tr><td>Government / heavily regulated</td><td><span class="badge b">Waterfall</span></td></tr>
+        <tr><td>Startup MVP</td><td><span class="badge g">Agile</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<footer>
+  Software Project Management · Experiment #3 · Agile vs Waterfall · 2024
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+function showSection(id) {
+  document.querySelectorAll('.scroll-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function switchTab(btnId, panelId) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+}
+
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const gridColor = isDark ? 'rgba(255,255,255,.06)' : 'rgba(0,0,0,.06)';
+const tickColor = isDark ? '#888' : '#999';
+
+Chart.defaults.font.family = "'Outfit', sans-serif";
+Chart.defaults.font.size = 11;
+
+// Chart 1 — Line
+new Chart(document.getElementById('c1'), {
+  type: 'line',
+  data: {
+    labels: ['D1','D2','D3','D4','D5','D6','D7','D8','D9','D10','D11','D12','D13','D14','D15','D16','D17','D18'],
+    datasets: [
+      { label: 'Agile', data: [3,5,4,6,5,7,6,8,7,9,8,10,9,null,null,null,null,null],
+        borderColor:'#1D9E75', backgroundColor:'rgba(29,158,117,.08)', borderWidth:2, tension:.4, fill:true, pointRadius:3, pointBackgroundColor:'#1D9E75' },
+      { label: 'Waterfall', data: [1,1,1,2,2,2,3,3,2,3,3,4,4,5,5,6,5,4],
+        borderColor:'#378ADD', borderDash:[5,4], borderWidth:2, tension:.4, fill:false, pointRadius:3, pointBackgroundColor:'#378ADD' }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { color: gridColor }, ticks: { color: tickColor, autoSkip: true, maxTicksLimit: 9 } },
+      y: { grid: { color: gridColor }, ticks: { color: tickColor }, min: 0, max: 12 }
+    }
+  }
+});
+
+// Chart 2 — Bar defects
+new Chart(document.getElementById('c2'), {
+  type: 'bar',
+  data: {
+    labels: ['Week 1', 'Week 2', 'Week 3'],
+    datasets: [
+      { label: 'Agile', data: [4, 2, 1], backgroundColor: 'rgba(29,158,117,.75)', borderRadius: 4, borderSkipped: false },
+      { label: 'Waterfall', data: [0, 1, 9], backgroundColor: 'rgba(55,138,221,.75)', borderRadius: 4, borderSkipped: false }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { display: false }, ticks: { color: tickColor } },
+      y: { grid: { color: gridColor }, ticks: { color: tickColor }, min: 0, max: 12 }
+    }
+  }
+});
+
+// Chart 3 — Area cumulative
+const days = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18];
+new Chart(document.getElementById('c3'), {
+  type: 'line',
+  data: {
+    labels: days.map(d => 'D'+d),
+    datasets: [
+      { label: 'Agile', data: [4,8,12,16,20,26,32,38,44,50,56,62,68,72,75,77,78,78],
+        borderColor:'#1D9E75', backgroundColor:'rgba(29,158,117,.12)', borderWidth:2, tension:.4, fill:true, pointRadius:0 },
+      { label: 'Waterfall', data: [6,12,18,24,30,37,44,52,60,70,80,90,100,108,116,124,132,138],
+        borderColor:'#378ADD', backgroundColor:'rgba(55,138,221,.1)', borderWidth:2, tension:.4, fill:true, pointRadius:0 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { color: gridColor }, ticks: { color: tickColor, autoSkip: true, maxTicksLimit: 9 } },
+      y: { grid: { color: gridColor }, ticks: { color: tickColor, callback: v => v+'h' }, min: 0, max: 150 }
+    }
+  }
+});
+</script>
